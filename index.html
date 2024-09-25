@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="shortcut icon" href="./src/favicon.ico" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              clifford: "#da373d",
+            },
+            fontFamily: {
+              sans: ["Noto Sans"],
+            },
+          },
+        },
+      }
+    </script>
+    <title>Ankor Website API Demo - Search</title>
+  </head>
+
+  <body class="bg-white text-md font-sans">
+    <!-- the top header -->
+    <header>
+      <div
+        class="border-1 border-b h-16 flex gap-x-4 justify-center items-center"
+      >
+        <div id="search-box" class="w-1/2"></div>
+        <div id="stats" class="text-sm text-gray-400"></div>
+      </div>
+    </header>
+
+    <!-- put the hits in the main content area -->
+    <main>
+      <div class="mx-8 my-4 md:mx-16 md:my-8">
+        <div id="hits"></div>
+        <div id="pagination" class="w-full"></div>
+      </div>
+    </main>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

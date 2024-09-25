@@ -1,0 +1,26 @@
+{
+  "name": "ankor-io-demo-website-api",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "BABEL_ENV=parcel parcel index.html --port 3000",
+    "build": "BABEL_ENV=parcel parcel build index.html"
+  },
+  "dependencies": {
+    "algoliasearch": "^5.6.0",
+    "instantsearch.css": "^8.5.1",
+    "instantsearch.js": "^4.74.2",
+    "luxon": "^3.5.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@parcel/core": "^2.12.0",
+    "@parcel/packager-raw-url": "^2.12.0",
+    "@parcel/transformer-webmanifest": "^2.12.0",
+    "parcel": "^2.12.0",
+    "prettier": "^3.3.3"
+  },
+  "@parcel/resolver-default": {
+    "packageExports": true
+  }
+}
