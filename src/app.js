@@ -179,7 +179,7 @@ const widgets = [
     sortBy: ['name:asc'],
     templates: {
       defaultOption(data, { html }) {
-        return html`<span>Country</span>`
+        return html`<span>Continent</span>`
       },
     },
     cssClasses: {
