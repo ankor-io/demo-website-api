@@ -31,6 +31,7 @@ const TEMPLATE_HIT = (hit, html, components) => html`
       <span class="text-gray-300 pl-8 text-sm">${hit.uri}</span>
     </div>
     <div>${components.Highlight({ hit, attribute: 'description' })}</div>
+    <div class="hidden">Hit: <pre>${JSON.stringify(hit, null, 2)}</pre></div>
     <div>Sleeps: ${hit.sleeps} | Cabins: ${hit.cabins} | Bathrooms: ${hit.bathrooms}</div>
     <div>
       <!-- render information from our mock backend -->
@@ -43,7 +44,8 @@ const TEMPLATE_HIT = (hit, html, components) => html`
               <span> to </span>
               <span>${DateTime.fromISO(effectiveDate.to).toISODate()}</span>
               <ul class="list-disc pl-8">
-                <li>Price: ${pricingInfo.pricing.currency} ${pricingInfo.pricing.total}</li>
+                <li>Charter Type: ${pricingInfo.pricing.unit == 'HOUR' ? 'DAY' : 'TERM'}</li>
+                <li>Price: ${pricingInfo.pricing.currency} ${pricingInfo.pricing.total / 100}</li>
                 <li>
                   Locations:
                   <ol class="list-decimal pl-4">
@@ -91,6 +93,35 @@ const widgets = [
       form: 'w-full',
       input: 'w-full border border-gray-300 rounded p-2',
       submitIcon: 'hidden',
+    },
+  }),
+
+  //
+  // refinement - charter type
+  refinementList({
+    container: '#refinement-charterType',
+    attribute: 'charterType',
+    sortBy: ['name:asc'],
+    operator: 'or',
+    showMore: false,
+    searchable: false,
+    cssClasses: {
+      root: 'w-full',
+      list: 'flex justify-center gap-x-2',
+    },
+    templates: {
+      item(item, { html }) {
+        const { url, label, count, isRefined } = item
+        return html`
+          <button
+            class="inline-flex items-center justify-center rounded-full w-24 ${isRefined
+              ? 'bg-sky-300'
+              : 'bg-gray-100'}"
+          >
+            <span>${label}</span><span class="pl-1 text-sm text-gray-400">(${count})</span>
+          </button>
+        `
+      },
     },
   }),
 

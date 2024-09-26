@@ -101,8 +101,14 @@ const toSearchRecords = (yacht) => {
           geoName: zone.category[2],
 
           // map the pricing information from the 'pricingInfo'
-          price: pricingInfo.pricing.total,
+          // the price in the API record is in 0.01 units of the currency, $1.23 = 123
+          price: pricingInfo.pricing.total / 100,
           priceCurrency: pricingInfo.pricing.currency,
+          priceUnit: pricingInfo.pricing.unit,
+          // derive a 'charter type' from the unit
+          //  WEEK = TERM
+          //  HOUR = DAY
+          charterType: pricingInfo.pricing.unit === 'WEEK' ? 'TERM' : 'DAY',
 
           // map the effective dates; these are in ISO8601 format.
           //  to easily filter on these, we will convert them to epoch seconds.

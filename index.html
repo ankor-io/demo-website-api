@@ -38,6 +38,11 @@
           margin: 0;
           -moz-appearance: textfield !important;
         }
+
+        .ais-Highlight-highlighted {
+          background-color: #fff;
+          color: rgb(3,105,161)
+        }
       }
     </style>
     <title>Ankor Website API Demo - Search</title>
@@ -54,6 +59,10 @@
           <div id="clear-refinements" class="pl-8 text-sm text-sky-400"></div>
         </div>
         <!-- refinements / filters -->
+        <div class="flex flex-nowrap gap-x-4">
+          <div class="w-24">Charter:</div>
+          <div id="refinement-charterType"></div>
+        </div>
         <div class="flex flex-nowrap gap-x-4">
           <div class="w-24">Sleeps:</div>
           <div id="refinement-sleeps"></div>

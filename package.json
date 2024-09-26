@@ -10,7 +10,7 @@
   "scripts": {
     "start": "BABEL_ENV=parcel parcel index.html --port 3000",
     "build": "BABEL_ENV=parcel parcel build index.html",
-    "convertSampleData": "cd data && node mapSampleToSearchRecords.mjs"
+    "convertSampleData": "cd data && node mapSampleToSearchRecords.mjs > search-records.json"
   },
   "dependencies": {
     "algoliasearch": "^5.6.0",
