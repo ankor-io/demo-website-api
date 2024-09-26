@@ -1,8 +1,9 @@
 import { liteClient as algoliasearch } from 'algoliasearch/lite'
 import instantsearch from 'instantsearch.js'
+import { connectRange } from 'instantsearch.js/es/connectors'
 import {
-  configure,
   clearRefinements,
+  configure,
   hits,
   menuSelect,
   pagination,
@@ -11,6 +12,8 @@ import {
   searchBox,
   stats,
 } from 'instantsearch.js/es/widgets'
+import { renderDateBeforeInput, renderDateAfterInput } from './dateInput'
+import { DateTime } from 'luxon'
 
 //
 const ALGOLIA_APP_ID = 'XS4X4GJGA8'
@@ -20,12 +23,39 @@ const ALGOLIA_INDEX_NAME = 'yachts'
 //
 // setup some templates to use for rendering the search results.
 const TEMPLATE_EMPTY_RESULTS = '<div class="text-center">No results found.</div>'
+// render the hit information (sorry for the messy code here)
 const TEMPLATE_HIT = (hit, html, components) => html`
   <div class="flex flex-col pb-4">
-    <div class="text-sky-700">${components.Highlight({ hit, attribute: 'name' })}</div>
+    <div class="text-sky-700 text-lg">
+      ${components.Highlight({ hit, attribute: 'name' })}
+      <span class="text-gray-300 pl-8 text-sm">${hit.uri}</span>
+    </div>
     <div>${components.Highlight({ hit, attribute: 'description' })}</div>
     <div>Sleeps: ${hit.sleeps} | Cabins: ${hit.cabins} | Bathrooms: ${hit.bathrooms}</div>
-    <p class="text-gray-300">${hit.uri}</p>
+    <div>
+      <!-- render information from our mock backend -->
+      <ol class="pl-4">
+        ${hit.mockBackend.pricing.pricingInfo.map((pricingInfo) => {
+          return pricingInfo.effectiveDates.map((effectiveDate) => {
+            return html`<li class="pt-2">
+              →
+              <span> From ${DateTime.fromISO(effectiveDate.from).toISODate()}</span>
+              <span> to </span>
+              <span>${DateTime.fromISO(effectiveDate.to).toISODate()}</span>
+              <ul class="list-disc pl-8">
+                <li>Price: ${pricingInfo.pricing.currency} ${pricingInfo.pricing.total}</li>
+                <li>
+                  Locations:
+                  <ol class="list-decimal pl-4">
+                    ${pricingInfo.pricing.inclusionZones.map((zone) => html`<li>${zone.category.join(' > ')}</li>`)}
+                  </ol>
+                </li>
+              </ul>
+            </li>`
+          })
+        })}
+      </ol>
+    </div>
   </div>
 `
 
@@ -46,7 +76,6 @@ const widgets = [
   // setup base configuration
   configure({
     hitsPerPage: 10,
-    facetingAfterDistinct: true,
     distinct: true,
     // attributeForDistinct: 'uri',
   }),
@@ -183,8 +212,9 @@ const widgets = [
       },
     },
     cssClasses: {
-      select: 'bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
-    }
+      select:
+        'bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
+    },
   }),
   menuSelect({
     container: '#refinement-geoRegion',
@@ -196,8 +226,9 @@ const widgets = [
       },
     },
     cssClasses: {
-      select: 'bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
-    }
+      select:
+        'bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
+    },
   }),
   menuSelect({
     container: '#refinement-geoName',
@@ -209,8 +240,26 @@ const widgets = [
       },
     },
     cssClasses: {
-      select: 'bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
-    }
+      select:
+        'bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
+    },
+  }),
+
+  //
+  // refinements - dates
+  connectRange(renderDateAfterInput)({
+    container: '#refinement-startDate',
+    attribute: 'startDate',
+    cssClasses: {
+      input: 'w-28 border border-gray-300 rounded p-2 text-center placeholder:text-sm',
+    },
+  }),
+  connectRange(renderDateBeforeInput)({
+    container: '#refinement-endDate',
+    attribute: 'endDate',
+    cssClasses: {
+      input: 'w-28 border border-gray-300 rounded p-2 text-center placeholder:text-sm',
+    },
   }),
 
   //
@@ -225,7 +274,7 @@ const widgets = [
     container: '#clear-refinements',
     templates: {
       resetLabel({ hasRefinements }, { html }) {
-        return html`<span>${hasRefinements ? '[ Reset All ]' : ''}</span>`;
+        return html`<span>${hasRefinements ? '[ Reset All ]' : ''}</span>`
       },
     },
   }),
