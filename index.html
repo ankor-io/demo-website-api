@@ -29,17 +29,53 @@
         },
       }
     </script>
+    <style>
+      @layer base {
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"] {
+          -webkit-appearance: none;
+          margin: 0;
+          -moz-appearance: textfield !important;
+        }
+      }
+    </style>
     <title>Ankor Website API Demo - Search</title>
   </head>
 
   <body class="bg-white text-md font-sans">
     <!-- the top header -->
-    <header>
-      <div
-        class="border-1 border-b h-16 flex gap-x-4 justify-center items-center"
-      >
-        <div id="search-box" class="w-1/2"></div>
-        <div id="stats" class="text-sm text-gray-400"></div>
+    <header class="min-h-16 border-1 border-b">
+      <div class="grid grid-cols-1 gap-4 px-16 py-2">
+        <!-- searchbox + stats -->
+        <div class="flex gap-x-4 items-center">
+          <div id="search-box" class="w-1/2"></div>
+          <div id="stats" class="text-sm text-gray-400"></div>
+          <div id="clear-refinements" class="pl-8 text-sm text-sky-400"></div>
+        </div>
+        <!-- refinements / filters -->
+        <div class="flex flex-nowrap gap-x-4">
+          <div class="w-24">Sleeps:</div>
+          <div id="refinement-sleeps"></div>
+        </div>
+        <div class="flex flex-nowrap gap-x-4">
+          <div class="w-24">Cabins:</div>
+          <div id="refinement-cabins"></div>
+        </div>
+        <div class="flex flex-nowrap gap-x-4">
+          <div class="w-24">Bathrooms:</div>
+          <div id="refinement-bathrooms"></div>
+        </div>
+        <div class="flex flex-nowrap gap-x-4">
+          <div class="w-24">Price:</div>
+          <div id="refinement-price" class="w-full"></div>
+        </div>
+        <div class="flex flex-nowrap gap-x-4">
+          <div class="w-24">Geo:</div>
+          <div id="refinement-geoContinent"></div>
+          <div id="refinement-geoRegion"></div>
+          <div id="refinement-geoName"></div>
+        </div>
       </div>
     </header>
 

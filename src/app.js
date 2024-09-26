@@ -1,7 +1,16 @@
 import { liteClient as algoliasearch } from 'algoliasearch/lite'
 import instantsearch from 'instantsearch.js'
-import { configure, hits, pagination, searchBox, stats } from 'instantsearch.js/es/widgets'
-
+import {
+  configure,
+  clearRefinements,
+  hits,
+  menuSelect,
+  pagination,
+  rangeInput,
+  refinementList,
+  searchBox,
+  stats,
+} from 'instantsearch.js/es/widgets'
 
 //
 const ALGOLIA_APP_ID = 'XS4X4GJGA8'
@@ -29,6 +38,7 @@ const search = instantsearch({
   apiKey: ALGOLIA_API_KEY,
   urlSync: true,
   insights: false,
+  routing: true,
 })
 
 //
@@ -57,9 +67,167 @@ const widgets = [
   }),
 
   //
+  // refinement - sleeps
+  refinementList({
+    container: '#refinement-sleeps',
+    attribute: 'sleeps',
+    // these are number values, so need a 'special' sort.
+    sortBy: (a, b) => parseInt(a.name) - parseInt(b.name),
+    operator: 'or',
+    showMore: false,
+    searchable: false,
+    cssClasses: {
+      root: 'w-full',
+      list: 'flex justify-center gap-x-2',
+    },
+    templates: {
+      item(item, { html }) {
+        const { url, label, count, isRefined } = item
+        return html`
+          <button
+            class="inline-flex items-center justify-center rounded-full w-16 ${isRefined
+              ? 'bg-sky-300'
+              : 'bg-gray-100'}"
+          >
+            <span>${label}</span><span class="pl-1 text-sm text-gray-400">(${count})</span>
+          </button>
+        `
+      },
+    },
+  }),
+
+  //
+  // refinements - cabins
+  refinementList({
+    container: '#refinement-cabins',
+    attribute: 'cabins',
+    // these are number values, so need a 'special' sort.
+    sortBy: (a, b) => parseInt(a.name) - parseInt(b.name),
+    operator: 'or',
+    showMore: false,
+    searchable: false,
+    cssClasses: {
+      root: 'w-full',
+      list: 'flex justify-center gap-x-2',
+    },
+    templates: {
+      item(item, { html }) {
+        const { url, label, count, isRefined } = item
+        return html`
+          <button
+            class="inline-flex items-center justify-center rounded-full w-16 ${isRefined
+              ? 'bg-sky-300'
+              : 'bg-gray-100'}"
+          >
+            <span>${label}</span><span class="pl-1 text-sm text-gray-400">(${count})</span>
+          </button>
+        `
+      },
+    },
+  }),
+
+  //
+  // refinements - bathrooms
+  refinementList({
+    container: '#refinement-bathrooms',
+    attribute: 'bathrooms',
+    // these are number values, so need a 'special' sort.
+    sortBy: (a, b) => parseInt(a.name) - parseInt(b.name),
+    operator: 'or',
+    showMore: false,
+    searchable: false,
+    cssClasses: {
+      root: 'w-full',
+      list: 'flex justify-center gap-x-2',
+    },
+    templates: {
+      item(item, { html }) {
+        const { url, label, count, isRefined } = item
+        return html`
+          <button
+            class="inline-flex items-center justify-center rounded-full w-16 ${isRefined
+              ? 'bg-sky-300'
+              : 'bg-gray-100'}"
+          >
+            <span>${label}</span><span class="pl-1 text-sm text-gray-400">(${count})</span>
+          </button>
+        `
+      },
+    },
+  }),
+
+  //
+  // refinements - price
+  rangeInput({
+    container: '#refinement-price',
+    attribute: 'price',
+    precision: 0,
+    cssClasses: {
+      root: 'w-full px-2',
+      form: 'w-full',
+      input: 'w-28 border border-gray-300 rounded p-2 text-center ',
+      separator: 'px-2',
+      submit: 'hidden',
+    },
+  }),
+
+  //
+  // refinements - geo
+  menuSelect({
+    container: '#refinement-geoContinent',
+    attribute: 'geoContinent',
+    sortBy: ['name:asc'],
+    templates: {
+      defaultOption(data, { html }) {
+        return html`<span>Country</span>`
+      },
+    },
+    cssClasses: {
+      select: 'bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+    }
+  }),
+  menuSelect({
+    container: '#refinement-geoRegion',
+    attribute: 'geoRegion',
+    sortBy: ['name:asc'],
+    templates: {
+      defaultOption(data, { html }) {
+        return html`<span>Region</span>`
+      },
+    },
+    cssClasses: {
+      select: 'bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+    }
+  }),
+  menuSelect({
+    container: '#refinement-geoName',
+    attribute: 'geoName',
+    sortBy: ['name:asc'],
+    templates: {
+      defaultOption(data, { html }) {
+        return html`<span>Area</span>`
+      },
+    },
+    cssClasses: {
+      select: 'bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+    }
+  }),
+
+  //
   // create stats area
   stats({
     container: '#stats',
+  }),
+
+  //
+  // allow refinements to be cleared
+  clearRefinements({
+    container: '#clear-refinements',
+    templates: {
+      resetLabel({ hasRefinements }, { html }) {
+        return html`<span>${hasRefinements ? '[ Reset All ]' : ''}</span>`;
+      },
+    },
   }),
 
   //
