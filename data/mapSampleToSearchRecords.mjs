@@ -42,7 +42,7 @@ const toSearchRecords = (yacht) => {
   // * Every yacht will have an array of dates and locations where it is available.
   // *   For example: A yacht named 'Muchacho'
   // *     - is available in the British Virgin Islands and Bermuda, from September to March
-  // *     - is available in the Italy, from April to August
+  // *     - is available in Italy, from April to August
   //
   // Because of this yacht availability, we will emit a search record for each
   // date/location pair. If your business requirements are not this strict, then you
