@@ -108,6 +108,11 @@ const toSearchRecords = (yacht) => {
           //  to easily filter on these, we will convert them to epoch seconds.
           startDate: DateTime.fromISO(when.from).toSeconds(),
           endDate: DateTime.fromISO(when.to).toSeconds(),
+
+          // since this is an example, we will mock out the 'backend' by using
+          // a field in the hit to store what a backend request for more information
+          // would return... in this case, the 'backend' is the yacht!
+          mockBackend: yacht
         }
 
         // add the record to the list of records to return
