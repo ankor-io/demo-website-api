@@ -66,7 +66,6 @@ const search = instantsearch({
   appId: ALGOLIA_APP_ID,
   indexName: ALGOLIA_INDEX_NAME,
   apiKey: ALGOLIA_API_KEY,
-  urlSync: true,
   insights: false,
   routing: true,
 })
@@ -220,6 +219,7 @@ const widgets = [
     container: '#refinement-geoRegion',
     attribute: 'geoRegion',
     sortBy: ['name:asc'],
+    limit: 99,
     templates: {
       defaultOption(data, { html }) {
         return html`<span>Region</span>`
@@ -234,6 +234,7 @@ const widgets = [
     container: '#refinement-geoName',
     attribute: 'geoName',
     sortBy: ['name:asc'],
+    limit: 99,
     templates: {
       defaultOption(data, { html }) {
         return html`<span>Area</span>`
