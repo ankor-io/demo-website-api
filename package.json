@@ -10,6 +10,7 @@
   "scripts": {
     "start": "BABEL_ENV=parcel parcel index.html --port 3000",
     "build": "BABEL_ENV=parcel parcel build index.html",
+    "generateSampleData": "cd data && node generateSampleYachts.mjs > sample-yachts.json",
     "convertSampleData": "cd data && node mapSampleToSearchRecords.mjs > search-records.json"
   },
   "dependencies": {

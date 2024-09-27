@@ -91,8 +91,6 @@ const toSearchRecords = (yacht) => {
           uri: yacht.uri,
           name: yacht.blueprint.name,
           description: yacht.description,
-          sleeps: yacht.blueprint.sleeps,
-          cabins: yacht.blueprint.cabins,
           bathrooms: yacht.blueprint.bathrooms,
 
           // map the inclusion zone to multiple fields
@@ -105,10 +103,27 @@ const toSearchRecords = (yacht) => {
           price: pricingInfo.pricing.total / 100,
           priceCurrency: pricingInfo.pricing.currency,
           priceUnit: pricingInfo.pricing.unit,
+
           // derive a 'charter type' from the unit
           //  WEEK = TERM
           //  HOUR = DAY
+          //
+          // sleeps/cabins and static/crusing capacity are sometimes mutually exclusive.
+          //  - sleeps/cabins are used for TERM (WEEK pricing) charters
+          //  - static/crusing capacity are used for DAY (HOUR pricing) charters
+          // sleeps: yacht.blueprint.sleeps,
+          // cabins: yacht.blueprint.cabins,
+          // staticCapacity: yacht.blueprint.staticCapacity,
+          // crusingCapacity: yacht.blueprint.crusingCapacity,
           charterType: pricingInfo.pricing.unit === 'WEEK' ? 'TERM' : 'DAY',
+          ...(pricingInfo.pricing.unit === 'WEEK' && {
+            sleeps: yacht.blueprint.sleeps,
+            cabins: yacht.blueprint.cabins,
+          }),
+          ...(pricingInfo.pricing.unit === 'HOUR' && {
+            staticCapacity: yacht.blueprint.staticCapacity,
+            crusingCapacity: yacht.blueprint.crusingCapacity,
+          }),
 
           // map the effective dates; these are in ISO8601 format.
           //  to easily filter on these, we will convert them to epoch seconds.
@@ -118,7 +133,7 @@ const toSearchRecords = (yacht) => {
           // since this is an example, we will mock out the 'backend' by using
           // a field in the hit to store what a backend request for more information
           // would return... in this case, the 'backend' is the yacht!
-          mockBackend: yacht
+          mockBackend: yacht,
         }
 
         // add the record to the list of records to return
