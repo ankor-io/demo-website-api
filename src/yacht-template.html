@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- 
+      To bring in some interactivity to this template we have brought in AlpineJS. 
+      The functionality to render this page can easily be performed by a backend server into a template.
+      There are tradeoffs for you to consider when deciding where to render the page.
+    -->
+    <script type="module" src="yacht-template.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"
+    ></script>
+    <script>
+      // Convert the path provided by the API to a full URL
+      function toImageUrl(loc, imageVariant) {
+        const _loc = loc.replace("{imageVariant}", imageVariant)
+        return `https://api.ankor.io${_loc}`
+      }
+      function formatPrice(p) {
+        return Intl.NumberFormat("en-US", {
+          style: "currency",
+          notation: "compact",
+          currency: p.currency,
+        }).format(p.price / 100)
+      }
+      function formatDate(d) {
+        console.log(d)
+        return new Date(d).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      }
+    </script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ablue: "#0a3fa9",
+            },
+            fontFamily: {
+              sans: ["Noto Sans"],
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      @layer base {
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"] {
+          -webkit-appearance: none;
+          margin: 0;
+          -moz-appearance: textfield !important;
+        }
+      }
+    </style>
+
+    <title>Ankor Website API Demo - Yacht Template</title>
+    <!-- 
+      Include SEO title, meta tags, og:tags, etc. 
+      Continue to follow good SEO practices throughout the template.
+    -->
+  </head>
+
+  <body class="bg-white text-md font-sans h-full" x-data="{showFields: false}">
+    <div class="min-h-full">
+      <nav class="border-b border-gray-200 bg-white">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="flex h-16 justify-between">
+            <div class="flex">
+              <div class="flex flex-shrink-0 items-center">
+                <img
+                  class="block h-8 w-auto lg:hidden"
+                  src="assets/ankor.svg"
+                  alt="Ankor Software"
+                />
+                <img
+                  class="hidden h-8 w-auto lg:block"
+                  src="assets/ankor.svg"
+                  alt="Ankor Software"
+                />
+              </div>
+              <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
+                <!-- top nav -->
+                <a
+                  href="/"
+                  class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                  >Dropdown Search</a
+                >
+                <!-- a
+                  href="geo-navigation.html"
+                  class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                  >Navigation by Geography</a
+                -->
+                <a
+                  href="yacht-template.html"
+                  class="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                  aria-current="page"
+                  >Yacht Template</a
+                >
+              </div>
+            </div>
+            <div class="hidden sm:ml-6 sm:flex sm:items-center">
+              <!-- github link -->
+              <div class="relative ml-3">
+                <div>
+                  <a
+                    href="https://github.com/ankor-io/demo-website-api"
+                    class="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    id="user-menu-button"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                  >
+                    <img
+                      class="h-8 w-8 rounded-full"
+                      src="assets/github-mark.svg"
+                      alt=""
+                    />
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="-mr-2 flex items-center sm:hidden">
+              <!-- mobile top nav button -->
+              <button
+                type="button"
+                id="sm-menu"
+                class="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                aria-controls="sm-menu"
+                aria-expanded="false"
+              >
+                <span class="absolute -inset-0.5"></span>
+                <span class="sr-only">Open main menu</span>
+                <svg
+                  id="sm-menu-closed"
+                  class="block h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  />
+                </svg>
+                <svg
+                  id="sm-menu-opened"
+                  class="hidden h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- sm breakpoint menu, show/hide based on menu state. -->
+        <div class="sm:hidden hidden" id="sm-menu-content">
+          <div class="space-y-1 pb-3 pt-2">
+            <a
+              href="/"
+              class="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700"
+              aria-current="page"
+              >Dropdown Search</a
+            >
+            <a
+              href="geo-navigation.html"
+              class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800"
+              >Navigation by Geography</a
+            >
+            <a
+              href="yacht-template.html"
+              class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800"
+              >Yacht Template</a
+            >
+          </div>
+          <div class="border-t border-gray-200 pb-3 pt-4">
+            <!-- github link -->
+            <div class="relative ml-3">
+              <div>
+                <a
+                  href="https://github.com/ankor-io/demo-website-api"
+                  class="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  id="user-menu-button"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                >
+                  <img
+                    class="h-8 w-8 rounded-full"
+                    src="assets/github-mark.svg"
+                    alt=""
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- toggle data / fields -->
+      <div>
+        <button
+          x-on:click="showFields = ! showFields"
+          type="button"
+          class="w-40 fixed top-20 left-4 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 z-50"
+        >
+          <span x-show="showFields">Show Content</span>
+          <span x-show="!showFields">Show Fields</span>
+        </button>
+      </div>
+      <!-- content -->
+      <div class="" x-data="{data:ankorAPIResponse}">
+        <section class="bg-gray-200 py-8 antialiased md:pb-16 lg:pt-0">
+          <div class="hidden h-[448px] overflow-hidden lg:block">
+            <img
+              x-show="!showFields"
+              class="h-full w-full object-cover block"
+              :src="toImageUrl(data.blueprint.images[0], '2560x')"
+              alt=""
+            />
+            <div
+              x-show="showFields"
+              class="font-mono flex items-center justify-center h-full"
+            >
+              toImageUrl(data.blueprint.images[0], '2560x')
+            </div>
+          </div>
+
+          <div class="relative mx-auto max-w-screen-xl px-4 lg:-mt-8">
+            <div
+              class="border-gray-200 bg-white shadow-sm lg:rounded-lg lg:rounded-b-none lg:border lg:p-8"
+            >
+              <div class="gap-12 pb-16 lg:flex">
+                <div class="min-w-0 flex-1 gap-8 sm:flex sm:items-start">
+                  <div class="hidden md:flex shrink-0 flex-col gap-y-4">
+                    <button
+                      type="button"
+                      class="mt-2 inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-primary-700 hover:bg-gray-100 lg:w-full"
+                    >
+                      <svg
+                        class="h-5 w-5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M13 10a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H14a1 1 0 0 1-1-1Z"
+                          clip-rule="evenodd"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12c0 .556-.227 1.06-.593 1.422A.999.999 0 0 1 20.5 20H4a2.002 2.002 0 0 1-2-2V6Zm6.892 12 3.833-5.356-3.99-4.322a1 1 0 0 0-1.549.097L4 12.879V6h16v9.95l-3.257-3.619a1 1 0 0 0-1.557.088L11.2 18H8.892Z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      Open gallery
+                    </button>
+
+                    <!-- align the top of the first image with the top of the yacht name -->
+                    <div class="-mt-2"></div>
+
+                    <!-- all the images -->
+                    <template x-if="data.blueprint.images.length > 0">
+                      <!-- do a (bad) shuffle and show 10 images -->
+                      <template x-for="img of data.blueprint.images.slice(1).sort((a, b) => 0.5 - Math.random()).slice(0,20)">
+                        <div class="w-36 shrink-0 overflow-hidden rounded-lg">
+                          <img
+                            class="h-full w-full object-cover"
+                            :src="toImageUrl(img, '320x')"
+                          />
+                        </div>
+                      </template>
+                    </template>
+                  </div>
+
+                  <div class="mt-4 min-w-0 flex-1 sm:mt-0">
+                    <!-- Include a breadcrumb that makes sense for your site -->
+                    <nav
+                      class="flex px-5 py-3 mb-4 text-gray-700 border border-gray-200 rounded-lg bg-gray-50"
+                      aria-label="Breadcrumb"
+                    >
+                      <ol
+                        class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse"
+                      >
+                        <li class="inline-flex items-center">
+                          <a
+                            href="#"
+                            class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600"
+                          >
+                            Yachts
+                          </a>
+                        </li>
+                        <li>
+                          <div class="flex items-center">
+                            <svg
+                              class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400"
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 6 10"
+                            >
+                              <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="m1 9 4-4-4-4"
+                              />
+                            </svg>
+                            <a
+                              href="#"
+                              class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2"
+                            >
+                              <span
+                                x-show="!showFields"
+                                x-text="data.yachtType[0]"
+                              ></span>
+                              <span x-show="showFields" class="font-mono"
+                                >data.yachtType[0]</span
+                              >
+                            </a>
+                          </div>
+                        </li>
+                        <li aria-current="page">
+                          <div class="flex items-center">
+                            <svg
+                              class="rtl:rotate-180 w-3 h-3 mx-1 text-gray-400"
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 6 10"
+                            >
+                              <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="m1 9 4-4-4-4"
+                              />
+                            </svg>
+                            <a
+                              href="#"
+                              class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2"
+                            >
+                              <span
+                                x-show="!showFields"
+                                x-text="data.blueprint.make"
+                              ></span>
+                              <span x-show="showFields" class="font-mono"
+                                >data.blueprint.make</span
+                              >
+                            </a>
+                          </div>
+                        </li>
+                      </ol>
+                    </nav>
+
+                    <!-- Any interesting tags we can include? -->
+                    <h1
+                      x-show="!showFields"
+                      class="mt-4 text-2xl font-semibold text-gray-900"
+                      x-text="data.blueprint.name"
+                    ></h1>
+                    <h1
+                      x-show="showFields"
+                      class="mt-4 text-2xl font-semibold text-gray-900 font-mono"
+                    >
+                      blueprint.name
+                    </h1>
+
+                    <div class="mt-4 flex flex-wrap items-center gap-6">
+                      <div class="flex flex-nowrap items-center gap-x-2">
+                          <img src="assets/measure.svg" alt="Length" class="w-7 h-7" />
+                          <span class="text-base font-normal text-gray-500">
+                            <span x-show="!showFields" x-text="`${data.blueprint.length}m`"></span>
+                            <span x-show="showFields" class="font-mono">data.blueprint.length</span>
+                          </span>
+                      </div>
+                      <div class="flex flex-nowrap items-center gap-x-2">
+                          <img src="assets/bed.svg" alt="Sleeps" class="w-7 h-7" />
+                          <span class="text-base font-normal text-gray-500">
+                            <span x-show="!showFields" x-text="data.blueprint.sleeps"></span>
+                            <span x-show="showFields" class="font-mono">data.blueprint.sleeps</span>
+                          </span>
+                      </div>
+                      <div class="flex flex-nowrap items-center gap-x-2">
+                          <img src="assets/door.svg" alt="Cabins" class="w-7 h-7" />
+                          <span class="text-base font-normal text-gray-500">
+                            <span x-show="!showFields" x-text="data.blueprint.cabins"></span>
+                            <span x-show="showFields" class="font-mono">data.blueprint.cabins</span>
+                          </span>
+                      </div>
+                      <div class="flex flex-nowrap items-center gap-x-2">
+                          <img src="assets/toilet.svg" alt="Bathrooms" class="w-7 h-7" />
+                          <span class="text-base font-normal text-gray-500">
+                            <span x-show="!showFields" x-text="data.blueprint.bathrooms"></span>
+                            <span x-show="showFields" class="font-mono">data.blueprint.bathrooms</span>
+                          </span>
+                      </div>
+                      <div class="flex flex-nowrap items-center gap-x-2">
+                          <img src="assets/crew.svg" alt="Crew" class="w-7 h-7" />
+                          <span class="text-base font-normal text-gray-500">
+                            <span x-show="!showFields" x-text="data.blueprint.maxCrew"></span>
+                            <span x-show="showFields" class="font-mono">data.blueprint.maxCrew</span>
+                          </span>
+                      </div>
+                    </div>
+
+                    <div class="mt-8 hidden space-y-8 sm:block">
+                      <p class="text-base font-semibold text-gray-900">
+                        About our <span x-show="!showFields">
+                          <span x-text="data.blueprint.builtYear"></span>
+                          <span x-show="data.blueprint.refitYear">(refit in <span x-text="data.blueprint.refitYear"></span>)</span>
+                          <span x-text="data.blueprint.make"></span>
+                          <span x-text="data.blueprint.model"></span>
+                        </span>
+                        <span x-show="showFields" class="font-mono">
+                          data.blueprint.builtYear data.blueprint.refitYear? data.blueprint.make data.blueprint.model
+                        </span>
+                      </p>
+                      <!-- description -->
+                      <div
+                        x-show="!showFields"
+                        class="space-y-4 text-base font-normal text-gray-500 whitespace-pre-wrap"
+                        x-html="data.description"
+                      ></div>
+                      <div
+                        x-show="showFields"
+                        class="space-y-4 text-base font-normal text-gray-500 font-mono align-left"
+                      >
+                        data.description
+                      </div>
+
+                      <!-- tenders -->
+                      <template x-if="data.blueprint.tenders.length > 0 || showFields">
+                        <div>
+                          <p class="text-base font-normal text-gray-500">Be shuttled from yacht to port by</p>
+                          <ul x-show="!showFields" class="list-disc space-y-2 pl-4 text-base font-normal text-gray-500">
+                            <template x-for="tender of data.blueprint.tenders">
+                              <li x-text="tender"></li>
+                            </template>
+                          </ul>
+                          <ul x-show="showFields" class="list-disc space-y-2 pl-4 text-base font-normal text-gray-500">
+                            <li class="font-mono">data.blueprint.tenders[]</li>
+                          </ul>
+                        </div>
+                      </template>
+
+                      <!-- Amenitites -->
+                      <template x-if="data.blueprint.amenities.length > 0 || showFields">
+                        <div>
+                          <h3 class="text-base font-normal text-gray-500">Amenities you will enjoy...</h3>
+                          <ul x-show="!showFields" class="list-disc space-y-2 pl-4 text-base font-normal text-gray-500">
+                            <template x-for="amenity of data.blueprint.amenities">
+                              <li><template x-if="amenity.quantity"><span x-text="`${amenity.quantity} x `"></span></template>
+                                <span x-text="amenity.label"></span></li>
+                            </template>
+                          </ul>
+                          <ul x-show="showFields" class="list-disc space-y-2 pl-4 text-base font-normal text-gray-500">
+                            <li class="font-mono">data.blueprint.amenities[].quantity x data.blueprint.amenities[].label</li>
+                          </ul>
+                        </div>
+                      </template>
+
+                      <!-- Toys -->
+                      <template x-if="data.blueprint.toys.length > 0 || showFields">
+                        <div>
+                          <h3 class="text-base font-normal text-gray-500">Spend your time playing with...</h3>
+                          <ul x-show="!showFields" class="list-disc space-y-2 pl-4 text-base font-normal text-gray-500">
+                            <template x-for="toy of data.blueprint.toys">
+                              <li><template x-if="toy.quantity"><span x-text="`${toy.quantity} x `"></span></template>
+                                <span x-text="toy.label"></span></li>
+                            </template>
+                          </ul>
+                          <ul x-show="showFields" class="list-disc space-y-2 pl-4 text-base font-normal text-gray-500">
+                            <li class="font-mono">data.blueprint.toys[].quantity x data.blueprint.toys[].label</li>
+                          </ul>
+                        </div>
+                      </template>
+
+                      <!-- Entertainment -->
+                      <template x-if="data.blueprint.entertainment.length > 0 || showFields">
+                        <div>
+                          <h3 class="text-base font-normal text-gray-500">And being entertained by...</h3>
+                          <ul x-show="!showFields" class="list-disc space-y-2 pl-4 text-base font-normal text-gray-500">
+                            <template x-for="e of data.blueprint.entertainment">
+                              <li><template x-if="e.quantity"><span x-text="`${e.quantity} x `"></span></template>
+                                <span x-text="e.label"></span></li>
+                            </template>
+                          </ul>
+                          <ul x-show="showFields" class="list-disc space-y-2 pl-4 text-base font-normal text-gray-500">
+                            <li class="font-mono">data.blueprint.entertainment[].quantity x data.blueprint.entertainment[].label</li>
+                          </ul>
+                        </div>
+                      </template>
+
+                    </div>
+                  </div>
+                </div>
+
+                <hr class="hidden border-gray-200 sm:mt-8 sm:block lg:hidden" />
+
+                <!-- right column -->
+                <div
+                  class="mt-6 shrink-0 space-y-8 ml-8 sm:mt-8 lg:mt-0 lg:ml-0 lg:w-full lg:max-w-xs"
+                >
+
+                  <div class="space-y-4">
+                    <a href="#"
+                      class="flex items-center justify-center rounded-lg border border-gray-200 bg-teal-300 px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 sm:w-full"
+                      role="button"
+                    >
+                      Contact us now!
+                    </a>
+                  </div>
+
+                  <!-- weekly / term pricing -->
+                  <template x-if="data.pricing.weekPricingFrom || showFields">
+                    <div>
+                      <!-- TODO: include the effective dates of the pricing in this block -->
+                      <h2 class="text-2xl font-medium leading-none text-gray-900">
+                        7-days from
+                        <span
+                          x-show="!showFields"
+                          class="font-extrabold"
+                          x-text="formatPrice(data.pricing.weekPricingFrom)"
+                        ></span>
+                        <span
+                          x-show="showFields"
+                          class="font-extrabold font-mono text-sm"
+                          >data.pricing.weekPricingFrom</span
+                        >
+                      </h2>
+                      <template x-if="data.blueprint.cabinLayout.length > 0 || showFields">
+                        <div class="pt-4">
+                          <p class="text-sm font-normal text-gray-500">with:</p>
+                          <ul x-show="!showFields" class="list-disc space-y-2 pl-4 text-sm font-normal text-gray-500">
+                            <template x-for="cabin of data.blueprint.cabinLayout">
+                              <li><template x-if="cabin.value"><span x-text="`${cabin.value} x `"></span></template>
+                                <span x-text="cabin.label"></span></li>
+                            </template>
+                          </ul>
+                          <ul x-show="showFields" class="list-disc space-y-2 pl-4 text-sm font-normal text-gray-500">
+                            <li class="font-mono">data.blueprint.cabin[].value x data.blueprint.cabin[].label</li>
+                          </ul>
+                        </div>
+                      </template>
+                      <template x-if="data.pricing.pricingInfo.length > 0 || showFields">
+                        <div class="pt-4">
+                          <p class="text-sm font-normal text-gray-500">Explore!</p>
+                          <ul x-show="!showFields" class="list-disc space-y-2 pl-4 text-sm font-normal text-gray-500">
+                            <template x-for="variant of data.pricing.pricingInfo">
+                              <template x-if="variant.pricing.unit === 'WEEK'">
+                                <template x-for="zone of variant.inclusionZones">
+                                  <li><span x-text="zone.label"></span></li>
+                                </template>
+                              </template>
+                            </template>
+                          </ul>
+                          <ul x-show="showFields" class="list-disc space-y-2 pl-4 text-sm font-normal text-gray-500">
+                            <li class="font-mono">data.pricing.pricingInfo[].pricing.unit === 'WEEK' data.pricing.pricingInfo[].inclusionZones[].label</li>
+                          </ul>
+                        </div>
+                      </template>
+                    </div>
+                  </template>
+
+                  <template x-if="data.pricing.weekPricingFrom && data.pricing.dayPricingFrom">
+                    <hr class="hidden border-gray-200 lg:block" />
+                  </template>
+
+                  <!-- day pricing -->
+                  <template x-if="data.pricing.dayPricingFrom || showFields">
+                    <div>
+                      <!-- TODO: include the effective dates of the pricing in this block -->
+                      <h2 class="text-2xl font-medium leading-none text-gray-900">
+                        1-day from
+                        <span
+                          x-show="!showFields"
+                          class="font-extrabold"
+                          x-text="formatPrice(data.pricing.dayPricingFrom)"
+                        ></span>
+                        <span
+                          x-show="showFields"
+                          class="font-extrabold font-mono text-sm"
+                          >data.pricing.dayPricingFrom</span
+                        >
+                      </h2>
+                      <template x-if="data.blueprint.cruisingCapacity > 0 || showFields">
+                        <div class="pt-4">
+                          <p class="text-md font-normal text-gray-500">for a maximum of
+                            <span x-show="!showFields" x-text="data.blueprint.cruisingCapacity"></span>
+                            <span x-show="showFields" class="font-mono">data.blueprint.cruisingCapacity</span>
+                            guests.
+                          </p>
+                        </div>
+                      </template>
+                      <template x-if="data.pricing.pricingInfo.length > 0 || showFields">
+                        <div class="pt-4">
+                          <template x-for="variant of data.pricing.pricingInfo">
+                            <template x-if="variant.pricing.unit === 'HOUR'">
+                              <div>
+                                <p class="text-sm font-normal font-semibold text-gray-500">
+                                  Available
+                                  <!-- TODO: loop over and output all of the effective dates -->
+                                  <span x-show="!showFields && variant.effectiveDates.length > 0" 
+                                        x-text="`from ${formatDate(variant.effectiveDates[0].from)} to ${formatDate(variant.effectiveDates[0].to)}`"></span>
+                                  <span x-show="showFields">
+                                        from ${formatDate(variant.effectiveDates[0].from)} to ${formatDate(variant.effectiveDates[0].to)}</span>
+                                </p>
+                                <p x-show="!showFields" class="text-sm pt-2 font-semibold font-normal text-gray-500" x-text="variant.name"></p>
+                                <p x-show="showFields" class="text-sm pt-2 font-semibold font-normal text-gray-500 font-mono">variant.name</p>
+                                <ul x-show="!showFields" class="list-disc space-y-2 pl-4 text-sm font-normal text-gray-500">
+                                  <template x-for="zone of variant.inclusionZones">
+                                    <li><span x-text="zone.label"></span></li>
+                                  </template>
+                                </ul>
+                              </div>
+                            </template>
+                          </template>
+                          <ul x-show="showFields" class="list-disc space-y-2 pl-4 text-sm font-normal text-gray-500">
+                            <li class="font-mono">data.pricing.pricingInfo[].pricing.unit === 'HOUR' data.pricing.pricingInfo[].inclusionZones[].label</li>
+                          </ul>
+                        </div>
+                      </template>
+                    </div>
+                  </template>
+
+
+                  <div class="sm:hidden">
+                    <p class="text-base font-semibold text-gray-900 lg:mt-4">
+                      About
+                    </p>
+                    <div
+                      x-show="!showFields"
+                      class="mt-2 space-y-4 text-base font-normal text-gray-500 whitespace-pre-wrap"
+                      x-html="data.description"
+                    ></div>
+                    <div
+                      x-show="showFields"
+                      class="mt-2 space-y-4 text-base font-normal text-gray-500 font-mono"
+                    >
+                      data.description
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    //
+    // toggle some UI elements when open/close nav in sm breakpoint
+    document.getElementById("sm-menu").addEventListener("click", function () {
+      document.getElementById("sm-menu-content").classList.toggle("hidden")
+      document.getElementById("sm-menu-opened").classList.toggle("hidden")
+      document.getElementById("sm-menu-closed").classList.toggle("hidden")
+    })
+  </script>
+</html>

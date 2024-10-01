@@ -1,55 +1,50 @@
 import { DateTime } from 'luxon'
 
-export const renderDateAfterInput = (renderOptions, isFirstRender) => {
-  const { widgetParams, start, refine } = renderOptions
-  const container = document.querySelector(widgetParams.container)
+//
+// This is a quick UI component to allow date input by text.
+// Replace the use of these with your favorite date picker.
+//
+
+//
+// Apply supplied value as "after this date" to the search.
+// It converts to a Unix epoch timestamp (seconds).
+export const textDateAfter = (renderOptions, isFirstRender) => {
+  const { widgetParams, refine } = renderOptions
+
   if (isFirstRender) {
-    const form = document.createElement('form')
-
-    form.addEventListener('submit', (event) => {
+    // define a method to handle the event
+    const a = (event) => {
       event.preventDefault()
-      const [input] = event.target.elements
-      const epochSec = DateTime.fromISO(input.value).toSeconds()
+      const input = event.target.value
+      const epochSec = DateTime.fromISO(input).toSeconds()
       refine([undefined, epochSec])
-    })
+    }
 
-    container.appendChild(form)
+    //
+    const el = document.querySelector(widgetParams.el)
+    el.addEventListener('change', a)
+    // el.addEventListener('keyup', a)  // or debounce this.
   }
-
-  container.querySelector('form').innerHTML = `
-    <input
-      name="afterVal"
-      type="text"
-      class="${widgetParams.cssClasses?.input || ''}"
-      value="${DateTime.fromSeconds(start[1]).toISODate() || ''}"
-      placeholder="YYYY-MM-DD"
-    />
-  `
 }
 
-export const renderDateBeforeInput = (renderOptions, isFirstRender) => {
-  const { widgetParams, start, refine } = renderOptions
-  const container = document.querySelector(widgetParams.container)
+//
+// Apply supplied value as "after this date" to the search.
+// It converts to a Unix epoch timestamp (seconds).
+export const textDateBefore = (renderOptions, isFirstRender) => {
+  const { widgetParams, refine } = renderOptions
+
   if (isFirstRender) {
-    const form = document.createElement('form')
-
-    form.addEventListener('submit', (event) => {
+    // define a method to handle the event
+    const a = (event) => {
       event.preventDefault()
-      const [input] = event.target.elements
-      const epochSec = DateTime.fromISO(input.value).toSeconds()
+      const input = event.target.value
+      const epochSec = DateTime.fromISO(input).toSeconds()
       refine([epochSec])
-    })
+    }
 
-    container.appendChild(form)
+    //
+    const el = document.querySelector(widgetParams.el)
+    el.addEventListener('change', a)
+    // el.addEventListener('keyup', a)  // or debounce this.
   }
-
-  container.querySelector('form').innerHTML = `
-    <input
-      name="beforeVal"
-      type="text"
-      class="${widgetParams.cssClasses?.input || ''}"
-      value="${DateTime.fromSeconds(start[0]).toISODate() || ''}"
-      placeholder="YYYY-MM-DD"
-    />
-  `
 }

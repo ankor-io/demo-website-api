@@ -90,45 +90,43 @@ const toSearchRecords = (yacht) => {
           // flatten the structure returned from the Ankor API
           uri: yacht.uri,
           name: yacht.blueprint.name,
-          description: yacht.description,
-          bathrooms: yacht.blueprint.bathrooms,
+          length_m: yacht.blueprint.length,
+          yachtType: yacht.yachtType,
 
           // map the inclusion zone to multiple fields
+          geoAreas: zone.category,
           geoContinent: zone.category[0],
           geoRegion: zone.category[1],
           geoName: zone.category[2],
 
           // map the pricing information from the 'pricingInfo'
           // the price in the API record is in 0.01 units of the currency, $1.23 = 123
-          price: pricingInfo.pricing.total / 100,
           priceCurrency: pricingInfo.pricing.currency,
-          priceUnit: pricingInfo.pricing.unit,
+          priceTotal: pricingInfo.pricing.total / 100,
 
           // derive a 'charter type' from the unit
           //  WEEK = TERM
           //  HOUR = DAY
+          charterType: pricingInfo.pricing.unit === 'WEEK' ? 'TERM' : 'DAY',
           //
-          // sleeps/cabins and static/crusing capacity are sometimes mutually exclusive.
+          // sleeps/cabins and static/cruising capacity are sometimes mutually exclusive.
           //  - sleeps/cabins are used for TERM (WEEK pricing) charters
-          //  - static/crusing capacity are used for DAY (HOUR pricing) charters
+          //  - static/cruising capacity are used for DAY (HOUR pricing) charters
           // sleeps: yacht.blueprint.sleeps,
           // cabins: yacht.blueprint.cabins,
           // staticCapacity: yacht.blueprint.staticCapacity,
-          // crusingCapacity: yacht.blueprint.crusingCapacity,
-          charterType: pricingInfo.pricing.unit === 'WEEK' ? 'TERM' : 'DAY',
+          // cruisingCapacity: yacht.blueprint.cruisingCapacity,
           ...(pricingInfo.pricing.unit === 'WEEK' && {
             sleeps: yacht.blueprint.sleeps,
-            cabins: yacht.blueprint.cabins,
           }),
           ...(pricingInfo.pricing.unit === 'HOUR' && {
-            staticCapacity: yacht.blueprint.staticCapacity,
-            crusingCapacity: yacht.blueprint.crusingCapacity,
+            cruisingCapacity: yacht.blueprint.cruisingCapacity,
           }),
 
           // map the effective dates; these are in ISO8601 format.
           //  to easily filter on these, we will convert them to epoch seconds.
-          startDate: DateTime.fromISO(when.from).toSeconds(),
-          endDate: DateTime.fromISO(when.to).toSeconds(),
+          effectiveDateFrom: DateTime.fromISO(when.from).toSeconds(),
+          effectiveDateTo: DateTime.fromISO(when.to).toSeconds(),
 
           // since this is an example, we will mock out the 'backend' by using
           // a field in the hit to store what a backend request for more information
