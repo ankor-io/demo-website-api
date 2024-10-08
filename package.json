@@ -8,8 +8,9 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "BABEL_ENV=parcel parcel index.html --port 3000",
-    "build": "BABEL_ENV=parcel parcel build index.html",
+    "clean": "rimraf dist .parcel-cache",
+    "start": "BABEL_ENV=parcel parcel src/index.html --port 3000",
+    "build": "BABEL_ENV=parcel parcel build src/index.html",
     "generateSampleData": "cd data && node generateSampleYachts.mjs > sample-yachts.json",
     "convertSampleData": "cd data && node mapSampleToSearchRecords.mjs > search-records.json"
   },
@@ -25,7 +26,10 @@
     "@parcel/packager-raw-url": "^2.12.0",
     "@parcel/transformer-webmanifest": "^2.12.0",
     "parcel": "^2.12.0",
-    "prettier": "^3.3.3"
+    "posthtml-include": "^2.0.1",
+    "posthtml-modules": "^0.9.1",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1"
   },
   "@parcel/resolver-default": {
     "packageExports": true

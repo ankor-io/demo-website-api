@@ -1,0 +1,44 @@
+<meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/>
+<link rel="shortcut icon" href="./favicon.ico" />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+  rel="stylesheet"
+/>
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ablue: "#0a3fa9",
+        },
+        fontFamily: {
+          sans: ["Noto Sans"],
+        },
+      },
+    },
+  }
+</script>
+<style>
+  @layer base {
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"] {
+      -webkit-appearance: none;
+      margin: 0;
+      -moz-appearance: textfield !important;
+    }
+
+    .ais-Highlight-highlighted {
+      background-color: #fff;
+      color: rgb(3, 105, 161);
+    }
+  }
+</style>
