@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <include src="./partials/head.html"></include>
+    <!-- 
+      Include SEO title, meta tags, og:tags, etc. 
+      Continue to follow good SEO practices throughout the template.
+    -->
+    <title>Ankor Website API Demo - Integration via iFrame</title>
+  </head>
+
+  <body class="bg-white text-md font-sans h-full" x-data="{showFields: false}">
+    <module href="./partials/layout.html">
+      <div class="grid grid-cols-1 gap-x-4">
+        <div class="mx-auto max-w-7xl py-8 px-2 sm:px-4 md:px-8">
+          <h1
+            class="text-xl font-bold leading-tight tracking-tight text-gray-900"
+          >
+            Integration: via iFrame
+          </h1>
+          <div class="text-gray-700">
+            <ul class="list-disc list-inside">
+              <li>
+                Any "Share" link created from any of the Ankor Products can be
+                embedded in your website via an iFrame.
+              </li>
+              <li>
+                This mechanism, while quick and easy, provides little to no SEO
+                benefits. It is suggested to ensure the pages and copy around
+                this iFrame are SEO optimized.
+              </li>
+              <li>The example below embeds a Presentation from Ankor Trips.</li>
+              <li>
+                How the iFrame is rendered in this page is customizable; see
+                <a
+                  class="text-blue-700 underline"
+                  href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe"
+                >
+                  MDN: &lt;iframe&gt;: The Inline Frame element
+                </a>
+                .
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 
+            In order to avoid double vertical overflows in this example, we set a large height 
+            As a developer, you can customize this to your design requirements.
+          -->
+        <div class="h-[832rem]">
+          <iframe
+            src="https://yacht-trips.io/aa8ae912-8546-11ef-9472-971cf247e5f6/proposal?wmode=opaque"
+            name="Hamilton Island to Airlie Beach"
+            data-embed="true"
+            class="mx-auto w-full px-8 md:w-4/5 overflow-x-clip border-0 h-full"
+            scrolling="no"
+          >
+          </iframe>
+        </div>
+      </div>
+    </module>
+  </body>
+</html>
