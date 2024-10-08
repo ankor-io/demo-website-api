@@ -98,6 +98,11 @@ const toSearchRecords = (yacht) => {
           geoContinent: zone.category[0],
           geoRegion: zone.category[1],
           geoName: zone.category[2],
+          geoHierarchy: {
+            lvl0: `${zone.category[0]}`,
+            lvl1: `${zone.category[0]} > ${zone.category[1]}`,
+            lvl2: `${zone.category[0]} > ${zone.category[1]} > ${zone.category[2]}`,
+          },
 
           // map the pricing information from the 'pricingInfo'
           // the price in the API record is in 0.01 units of the currency, $1.23 = 123

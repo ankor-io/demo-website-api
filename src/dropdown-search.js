@@ -1,7 +1,7 @@
 import { liteClient as algoliasearch } from 'algoliasearch/lite'
 import instantsearch from 'instantsearch.js'
 import { connectRange } from 'instantsearch.js/es/connectors'
-import { clearRefinements, configure, hits, menuSelect, pagination, stats } from 'instantsearch.js/es/widgets'
+import { clearRefinements, configure, menuSelect, pagination, stats } from 'instantsearch.js/es/widgets'
 import { textDateAfter, textDateBefore } from './dateInput'
 import { selectMinMax } from './filterSelect'
 import { customHits } from './renderHits'

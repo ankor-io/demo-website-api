@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <include src="./partials/head.html"></include>
+    <!-- 
+      In the head, include SEO title, meta tags, og:tags, etc. 
+      Continue to follow good SEO practices throughout the template.
+    -->
+    <title>Ankor Website API Demo - Navigation by Geo</title>
+  </head>
+
+  <body class="bg-white text-md font-sans h-full">
+    <module href="./partials/layout.html">
+      <header class="pt-10">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h1
+            class="text-xl font-bold leading-tight tracking-tight text-gray-900"
+          >
+            Geographic Navigation Drilldown
+          </h1>
+        </div>
+      </header>
+      <main>
+        <div
+          class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 grid grid-cols-[288px_minmax(900px,_1fr)] gap-4"
+        >
+          <div class="">
+            <div id="refinement-geo"></div>
+          </div>
+
+          <div class="grid grid-cols-1">
+            <!-- stats / reset -->
+            <div class="flex gap-x-4">
+              <div id="stats" class="pb-4"></div>
+              <div id="clear-refinements"></div>
+            </div>
+
+            <!-- hits -->
+            <div
+              id="hits"
+              data-ul-class="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-2 xl:gap-x-8"
+            ></div>
+
+            <!-- pages. -->
+            <div id="pagination" class="p-4"></div>
+          </div>
+        </div>
+      </main>
+    </module>
+  </body>
+
+  <script type="module" src="./nav-geo.js"></script>
+</html>

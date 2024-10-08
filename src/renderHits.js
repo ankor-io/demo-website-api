@@ -5,9 +5,12 @@ import { connectHits } from 'instantsearch.js/es/connectors'
 const renderHits = (renderOptions, isFirstRender) => {
   const { items, widgetParams } = renderOptions
 
-            // <dd class="text-gray-700"><time datetime="2022-12-13">December 13, 2022</time></dd>
+  const defaultClass = 'grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8'
+  const ulClass = widgetParams.container.getAttribute('data-ul-class')
+
+  // <dd class="text-gray-700"><time datetime="2022-12-13">December 13, 2022</time></dd>
   widgetParams.container.innerHTML = `
-    <ul role="list" class="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
+    <ul role="list" class="${ulClass || defaultClass}">
     ${items
       .map(
         (hit) => `
@@ -43,7 +46,7 @@ const renderHits = (renderOptions, isFirstRender) => {
           <div class="flex justify-between gap-x-4 py-3">
             <dt class="text-gray-500">From</dt>
             <!-- this price is already div 100 prior to sending to the search provider -->
-            <dd class="text-gray-700">${Intl.NumberFormat('en-US', { style: 'currency', currency: hit.priceCurrency}).format(hit.priceTotal)}</dd>
+            <dd class="text-gray-700">${Intl.NumberFormat('en-US', { style: 'currency', currency: hit.priceCurrency }).format(hit.priceTotal)}</dd>
           </div>
         </dl>
       </li>
