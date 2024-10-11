@@ -71,7 +71,7 @@ const generateBaseEntity = (locationTier) => ({
           total: between(1000000, 100000000), // 10k to 1M
           currency: 'USD',
           unit: 'WEEK',
-          inclusionZones: [{ category: locationTier }],
+          inclusionZones: [{ category: locationTier[0], coordinates: locationTier[2], bbox: locationTier[1] }],
           exclusionZones: [],
         },
       },
@@ -90,7 +90,7 @@ const generateDayPricing = (locationTier) => ({
     total: between(10000, 1000000), // 100 to 10k
     currency: 'USD',
     unit: 'HOUR',
-    inclusionZones: [{ category: locationTier }],
+    inclusionZones: [{ category: locationTier[0], coordinates: locationTier[2], bbox: locationTier[1] }],
     exclusionZones: [],
   },
 })

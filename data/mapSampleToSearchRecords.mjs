@@ -77,7 +77,7 @@ const toSearchRecords = (yacht) => {
     //      total: 2609335,
     //      currency: 'USD',
     //      unit: 'WEEK',
-    //      inclusionZones: [ { "category": [ "North America", "Caribbean", "British Virgin Islands" ] } ]
+    //      inclusionZones: [ { "category": [ "North America", "Caribbean", "British Virgin Islands" ] }, ... ]
     //    }
     //  }
 
@@ -103,6 +103,16 @@ const toSearchRecords = (yacht) => {
             lvl1: `${zone.category[0]} > ${zone.category[1]}`,
             lvl2: `${zone.category[0]} > ${zone.category[1]} > ${zone.category[2]}`,
           },
+          // to perform "geo" searches with Algolia we need a '_geoloc' field
+          _geoloc: [
+            // include the coordinates (input = [lng, lat])
+            { lat: zone.coordinates[1], lng: zone.coordinates[0] },
+            // and then each of the bounding box corners (input = [minX, minY, maxX, maxY])
+            { lat: zone.bbox[3], lng: zone.bbox[0] }, // top left
+            { lat: zone.bbox[3], lng: zone.bbox[2] }, // top right
+            { lat: zone.bbox[1], lng: zone.bbox[2] }, // bottom right
+            { lat: zone.bbox[1], lng: zone.bbox[0] }, // bottom left
+          ],
 
           // map the pricing information from the 'pricingInfo'
           // the price in the API record is in 0.01 units of the currency, $1.23 = 123
