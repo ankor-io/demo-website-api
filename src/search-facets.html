@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <include src="./partials/head.html"></include>
+    <!-- 
+      In the head, include SEO title, meta tags, og:tags, etc. 
+      Continue to follow good SEO practices throughout the template.
+    -->
+    <title>Ankor Website API Demo</title>
+  </head>
+
+  <body class="bg-white text-md font-sans h-full">
+    <module href="./partials/layout.html">
+      <header class="pt-10">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h1
+            class="text-xl font-bold leading-tight tracking-tight text-gray-900"
+          >
+            Facet Destination Search
+          </h1>
+        </div>
+      </header>
+      <main>
+        <div
+          class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 grid grid-cols-1 gap-y-4"
+        >
+          <div class="text-gray-600 pb-4">
+            <ul class="list-outside list-disc pl-6">
+              <li>
+                This example uses geographic area names (the 'category' field)
+                from the Ankor Website API response and maps these fields to the
+                indexed record within the search provider.
+              </li>
+              <li>
+                These (three level) geographic area names are then used as a
+                facet to filter the yachts based on their location. This list
+                can be formatted as a three-tiered dropdown if required by
+                tweaking the record indexing and faceting.
+              </li>
+              <li>If filtering by using the dates, use dates within 2024.</li>
+            </ul>
+          </div>
+
+          <div
+            class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-6 xl:gap-x-8"
+          >
+            <!-- Destination; this is a dynamic facet -->
+            <div>
+              <label
+                for="destination"
+                class="block text-sm uppercase font-medium leading-6 text-gray-900"
+                >Destination</label
+              >
+              <div id="refinement-destination"></div>
+            </div>
+
+            <!-- Type of Yacht; this is a dynamic facet -->
+            <div>
+              <label
+                for="yachtType"
+                class="block text-sm uppercase font-medium leading-6 text-gray-900"
+                >Type of yacht</label
+              >
+              <div id="refinement-yachtType"></div>
+            </div>
+            <!-- Length (m); this is a filter -->
+            <div>
+              <label
+                for="length"
+                class="block text-sm uppercase font-medium leading-6 text-gray-900"
+                >Length (m)</label
+              >
+              <select
+                id="refinement-length"
+                class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              >
+                <option value="[0]">Any</option>
+                <option value="[,20]">&lt; 20 m</option>
+                <option value="[20,30]">20-30 m</option>
+                <option value="[30,40]">30-40 m</option>
+                <option value="[40,50]">40-50 m</option>
+                <option value="[50]">&gt; 50 m</option>
+              </select>
+            </div>
+
+            <!-- Num of Guests; (assuming "up to this number of guests") this is a filter -->
+            <!-- 
+                This uses the 'sleeps' field from the API which is for TERM (multi-day) charters.
+                Single day charters should use the 'crusingCapacity' field from the API .
+              -->
+            <div>
+              <label
+                for="sleeps"
+                class="block text-sm uppercase font-medium leading-6 text-gray-900"
+                >Number of Guests</label
+              >
+              <select
+                id="refinement-sleeps"
+                class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              >
+                <option value="[0]">Any</option>
+                <option value="[,1]">1</option>
+                <option value="[,2]">2</option>
+                <option value="[,3]">3</option>
+                <option value="[,4]">4</option>
+                <option value="[,5]">5</option>
+                <option value="[,6]">6</option>
+                <option value="[,7]">7</option>
+                <option value="[,8]">8</option>
+                <option value="[,9]">9</option>
+                <option value="[,10]">10</option>
+                <option value="[,11]">11</option>
+                <option value="[,12]">12</option>
+                <option value="[,15]">15</option>
+                <option value="[,20]">20</option>
+                <option value="[,25]">25</option>
+                <option value="[,30]">30</option>
+                <option value="[,40]">40</option>
+                <option value="[,50]">50</option>
+                <option value="[,60]">60</option>
+                <option value="[,100]">100</option>
+              </select>
+            </div>
+
+            <!-- Embarkation Date; this is a filter using epoch seconds -->
+            <div>
+              <label
+                for="embarkation"
+                class="block text-sm uppercase font-medium leading-6 text-gray-900"
+                >Embarking Date</label
+              >
+              <input
+                id="refinement-embarkation"
+                type="text"
+                class="w-28 border border-gray-300 rounded p-2 text-center placeholder:text-sm"
+                placeholder="YYYY-MM-DD"
+              />
+            </div>
+            <!-- Disembarkation Date; this is a filter using epoch seconds -->
+            <div>
+              <label
+                for="disembarkation"
+                class="block text-sm uppercase font-medium leading-6 text-gray-900"
+                >Disembarking Date</label
+              >
+              <input
+                id="refinement-disembarkation"
+                type="text"
+                class="w-28 border border-gray-300 rounded p-2 text-center placeholder:text-sm"
+                placeholder="YYYY-MM-DD"
+              />
+            </div>
+          </div>
+
+          <!-- stats -->
+          <div class="flex gap-x-4">
+            <div id="stats"></div>
+            <div id="clear-refinements"></div>
+          </div>
+
+          <!-- hits -->
+          <div id="hits"></div>
+
+          <!-- pages. -->
+          <div id="pagination" class="p-4"></div>
+        </div>
+      </main>
+    </module>
+  </body>
+
+  <!-- include the search functionality -->
+  <script type="module" src="./search-facets.js"></script>
+</html>

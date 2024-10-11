@@ -16,7 +16,7 @@
           <h1
             class="text-xl font-bold leading-tight tracking-tight text-gray-900"
           >
-            Multi-level Dropdown Search
+            Ankor Website API Examples.
           </h1>
         </div>
       </header>
@@ -25,139 +25,77 @@
           class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 grid grid-cols-1 gap-y-4"
         >
           <!-- msg -->
-          <div class="text-gray-400 pb-4">
-            <ul>
-              <li>All data uses dates in 2024</li>
+          <div class="text-gray-600 pb-4">
+            <ul class="pl-4">
+              <li>
+                Here are some examples demonstrating how to create your own
+                search functionality using data supplied by the Ankor API; see
+                <a
+                  class="text-blue-400 hover:underline"
+                  href="https://api.ankor.io/"
+                  >api.ankor.io</a
+                >
+                for technical details of the API.
+              </li>
+              <li>
+                Data found in these examples is for demonstration purposes only;
+                it is available in the GitHub repo linked below.
+              </li>
+              <li>
+                The source code to these examples can be found in this GitHub
+                repo:
+                <a
+                  class="text-blue-400 hover:underline"
+                  href="https://github.com/ankor-io/demo-website-api/"
+                  >github.com/ankor-io/demo-website-api/</a
+                >
+              </li>
             </ul>
           </div>
 
-          <div
-            class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-6 xl:gap-x-8"
-          >
-            <!-- Destination; this is a dynamic facet -->
-            <div>
-              <label
-                for="destination"
-                class="block text-sm uppercase font-medium leading-6 text-gray-900"
-                >Destination</label
-              >
-              <div id="refinement-destination"></div>
-            </div>
-
-            <!-- Type of Yacht; this is a dynamic facet -->
-            <div>
-              <label
-                for="yachtType"
-                class="block text-sm uppercase font-medium leading-6 text-gray-900"
-                >Type of yacht</label
-              >
-              <div id="refinement-yachtType"></div>
-            </div>
-            <!-- Length (m); this is a filter -->
-            <div>
-              <label
-                for="length"
-                class="block text-sm uppercase font-medium leading-6 text-gray-900"
-                >Length (m)</label
-              >
-              <select
-                id="refinement-length"
-                class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              >
-                <option value="[0]">Any</option>
-                <option value="[,20]">&lt; 20 m</option>
-                <option value="[20,30]">20-30 m</option>
-                <option value="[30,40]">30-40 m</option>
-                <option value="[40,50]">40-50 m</option>
-                <option value="[50]">&gt; 50 m</option>
-              </select>
-            </div>
-
-            <!-- Num of Guests; (assuming "up to this number of guests") this is a filter -->
-            <!-- 
-                This uses the 'sleeps' field from the API which is for TERM (multi-day) charters.
-                Single day charters should use the 'crusingCapacity' field from the API .
-              -->
-            <div>
-              <label
-                for="sleeps"
-                class="block text-sm uppercase font-medium leading-6 text-gray-900"
-                >Number of Guests</label
-              >
-              <select
-                id="refinement-sleeps"
-                class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              >
-                <option value="[0]">Any</option>
-                <option value="[,1]">1</option>
-                <option value="[,2]">2</option>
-                <option value="[,3]">3</option>
-                <option value="[,4]">4</option>
-                <option value="[,5]">5</option>
-                <option value="[,6]">6</option>
-                <option value="[,7]">7</option>
-                <option value="[,8]">8</option>
-                <option value="[,9]">9</option>
-                <option value="[,10]">10</option>
-                <option value="[,11]">11</option>
-                <option value="[,12]">12</option>
-                <option value="[,15]">15</option>
-                <option value="[,20]">20</option>
-                <option value="[,25]">25</option>
-                <option value="[,30]">30</option>
-                <option value="[,40]">40</option>
-                <option value="[,50]">50</option>
-                <option value="[,60]">60</option>
-                <option value="[,100]">100</option>
-              </select>
-            </div>
-
-            <!-- Embarkation Date; this is a filter using epoch seconds -->
-            <div>
-              <label
-                for="embarkation"
-                class="block text-sm uppercase font-medium leading-6 text-gray-900"
-                >Embarking Date</label
-              >
-              <input
-                id="refinement-embarkation"
-                type="text"
-                class="w-28 border border-gray-300 rounded p-2 text-center placeholder:text-sm"
-                placeholder="YYYY-MM-DD"
-              />
-            </div>
-            <!-- Disembarkation Date; this is a filter using epoch seconds -->
-            <div>
-              <label
-                for="disembarkation"
-                class="block text-sm uppercase font-medium leading-6 text-gray-900"
-                >Disembarking Date</label
-              >
-              <input
-                id="refinement-disembarkation"
-                type="text"
-                class="w-28 border border-gray-300 rounded p-2 text-center placeholder:text-sm"
-                placeholder="YYYY-MM-DD"
-              />
-            </div>
+          <div class="text-gray-600 pb-4">
+            <ul class="list-outside list-disc pl-6">
+              <li>
+                <a
+                  class="text-blue-400 hover:underline"
+                  href="./search-custom-geo.html"
+                  >Search implemented with facets and custom geographies</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-blue-400 hover:underline"
+                  href="./yacht-template.html"
+                  >An example of a yacht template: a single page template
+                  highlighting the mapping between the API response fields and a
+                  webpage.</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-blue-400 hover:underline"
+                  href="./search-facets.html"
+                  >Search implemented with facets</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-blue-400 hover:underline"
+                  href="./navigation-geo.html"
+                  >Creating a heirarchical navigation using a geography</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-blue-400 hover:underline"
+                  href="./integration-iframe.html"
+                  >Integration using an iFrame</a
+                >
+              </li>
+            </ul>
           </div>
-
-          <!-- stats -->
-          <div class="flex gap-x-4">
-            <div id="stats"></div>
-            <div id="clear-refinements"></div>
-          </div>
-
-          <!-- hits -->
-          <div id="hits"></div>
-
-          <!-- pages. -->
-          <div id="pagination" class="p-4"></div>
         </div>
       </main>
     </module>
   </body>
-
-  <!-- include the search functionality -->
-  <script type="module" src="./dropdown-search.js"></script>
 </html>
